@@ -6,6 +6,7 @@ import {
   Brain,
   Award,
   GitBranch,
+  Globe,
 } from 'lucide-react';
 import { ClerkProvider,useAuth, UserButton } from '@clerk/clerk-react';
 import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
@@ -55,11 +56,7 @@ function NavigationBar() {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-3">
-              <img 
-                src={logo} 
-                alt="CodeCore Logo" 
-                className="h-10 w-10 object-contain rounded-full"
-              />
+              <Globe className="h-8 w-8 text-green-600" />
               <div className="text-xl font-bold">
                 <TypeAnimation
                   sequence={[
