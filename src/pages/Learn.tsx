@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import { BookOpen, CheckCircle2, Lock, PlayCircle, Timer } from 'lucide-react';
 
 const courses = [

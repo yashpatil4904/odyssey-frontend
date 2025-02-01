@@ -14,13 +14,17 @@ import {
   Building2
 } from 'lucide-react';
 import { ClerkProvider, SignIn, SignUp, useAuth, UserButton } from '@clerk/clerk-react';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate, useLocation, Outlet } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import Learn from './pages/Learn';
 import DashboardHome from './pages/DashboardHome';
+import Challenges from './pages/Challenges';
+import ProblemPage from './pages/ProblemPage';
+import Sidebar from './components/Sidebar';
+import { ThemeProvider } from './context/ThemeContext';
 
 function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
   return (
@@ -245,7 +249,8 @@ function AppContent() {
         >
           <Route index element={<DashboardHome />} />
           <Route path="learning" element={<Learn />} />
-          {/* Add other dashboard routes here */}
+          <Route path="challenges" element={<Challenges />} />
+          <Route path="challenges/:id" element={<ProblemPage />} />
         </Route>
       </Routes>
     </>
@@ -255,9 +260,11 @@ function AppContent() {
 function App() {
   return (
     <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
-      <Router>
-        <AppContent />
-      </Router>
+      <ThemeProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </ThemeProvider>
     </ClerkProvider>
   );
 }

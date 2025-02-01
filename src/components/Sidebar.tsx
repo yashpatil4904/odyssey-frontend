@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   ChevronLeft, 
@@ -7,7 +7,8 @@ import {
   Code2, 
   Trophy,
   Settings,
-  User
+  User,
+  Brain
 } from 'lucide-react';
 import { UserButton } from '@clerk/clerk-react';
 
@@ -16,6 +17,7 @@ const menuItems = [
   { icon: BookOpen, label: 'Learning Path', path: '/dashboard/learning' },
   { icon: Code2, label: 'Practice', path: '/dashboard/practice' },
   { icon: Trophy, label: 'Contests', path: '/dashboard/contests' },
+  { icon: Brain, label: 'Challenges', path: '/dashboard/challenges' },
 ];
 
 export default function Sidebar() {
