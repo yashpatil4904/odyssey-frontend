@@ -14,11 +14,13 @@ import {
   Building2
 } from 'lucide-react';
 import { ClerkProvider, SignIn, SignUp, useAuth, UserButton } from '@clerk/clerk-react';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate, useLocation } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
+import Learn from './pages/Learn';
+import DashboardHome from './pages/DashboardHome';
 
 function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
   return (
@@ -222,24 +224,39 @@ function LandingPage() {
   );
 }
 
+function AppContent() {
+  const location = useLocation();
+  const showNavbar = location.pathname === '/';
+
+  return (
+    <>
+      {showNavbar && <NavigationBar />}
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/sign-in/*" element={<SignInPage />} />
+        <Route path="/sign-up/*" element={<SignUpPage />} />
+        <Route
+          path="/dashboard/*"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<DashboardHome />} />
+          <Route path="learning" element={<Learn />} />
+          {/* Add other dashboard routes here */}
+        </Route>
+      </Routes>
+    </>
+  );
+}
+
 function App() {
   return (
     <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
       <Router>
-        <NavigationBar />
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/sign-in/*" element={<SignInPage />} />
-          <Route path="/sign-up/*" element={<SignUpPage />} />
-        </Routes>
+        <AppContent />
       </Router>
     </ClerkProvider>
   );

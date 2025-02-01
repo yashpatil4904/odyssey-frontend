@@ -1,342 +1,129 @@
-import React, { useState } from "react";
-import {
-  BookOpen,
-  GraduationCap,
-  TrendingUp,
-  Shield,
-  Brain,
-  PlayCircle,
-} from "lucide-react";
-
-const videos = {
-  Beginner: [
-    {
-      videolink: "https://www.youtube.com/watch?v=p3OUFMpT7B0",
-      title: "How to Invest For Beginners (2023 Step-by-Step Guide)",
-      description:
-        "A comprehensive guide for beginners on how to start investing in 2023, covering various investment strategies and tips.",
-      duration: "45 min",
-      modules: 1,
-      progress: 0,
-    },
-    {
-      videolink: "https://www.youtube.com/watch?v=ZCFkWDdmXG8",
-      title: "Understanding the Stock Market for Beginners",
-      description:
-        "An easy-to-understand explanation of how the stock market works, tailored for those new to investing.",
-      duration: "30 min",
-      modules: 1,
-      progress: 0,
-    },
-  ],
-  Intermediate: [
-    {
-      videolink: "https://www.youtube.com/watch?v=gFQNPmLKj1k",
-      title: "5 Ways to Save Money Fast - Financial Hacks",
-      description:
-        "Learn five effective strategies to save money quickly and improve your financial situation with practical tips.",
-      duration: "25 min",
-      modules: 1,
-      progress: 0,
-    },
-    {
-      videolink: "https://www.youtube.com/watch?v=M3r2XDceM6A",
-      title: "Investment Strategies and Portfolio Management",
-      description:
-        "Learn about different investment strategies and how to manage your portfolio effectively.",
-      duration: "35 min",
-      modules: 1,
-      progress: 0,
-    },
-  ],
-  Advanced: [
-    {
-      videolink: "https://www.youtube.com/watch?v=WEDIj9JBTC8",
-      title: "Advanced Stock Trading Strategies",
-      description:
-        "Discover advanced trading strategies and techniques for experienced investors.",
-      duration: "40 min",
-      modules: 1,
-      progress: 0,
-    },
-  ],
-};
+import React from 'react';
+import { BookOpen, CheckCircle2, Lock, PlayCircle, Timer } from 'lucide-react';
 
 const courses = [
   {
-    level: "Beginner",
-    icon: BookOpen,
-    courses: [
-      {
-        title: "Introduction to Investing",
-        description: "Learn the basics of investing and financial markets",
-        duration: "2 hours",
-        modules: 5,
-        progress: 80,
-      },
-      {
-        title: "Understanding Stocks",
-        description: "Master the fundamentals of stock market investing",
-        duration: "3 hours",
-        modules: 8,
-        progress: 60,
-      },
-    ],
+    id: 1,
+    title: 'Arrays and Strings',
+    description: 'Master the fundamentals of array manipulation and string algorithms',
+    duration: '2.5 hours',
+    lessons: 12,
+    progress: 100,
+    status: 'completed'
   },
   {
-    level: "Intermediate",
-    icon: TrendingUp,
-    courses: [
-      {
-        title: "Technical Analysis",
-        description: "Learn to analyze market trends and patterns",
-        duration: "4 hours",
-        modules: 10,
-        progress: 30,
-      },
-      {
-        title: "Portfolio Management",
-        description: "Master the art of building and managing investments",
-        duration: "3 hours",
-        modules: 6,
-        progress: 0,
-      },
-    ],
+    id: 2,
+    title: 'Linked Lists',
+    description: 'Understanding linked lists and their applications',
+    duration: '3 hours',
+    lessons: 15,
+    progress: 60,
+    status: 'in-progress'
   },
   {
-    level: "Advanced",
-    icon: Brain,
-    courses: [
-      {
-        title: "AI in Trading",
-        description: "Explore how AI is revolutionizing trading",
-        duration: "5 hours",
-        modules: 12,
-        progress: 0,
-      },
-      {
-        title: "Risk Management",
-        description: "Advanced strategies for managing investment risks",
-        duration: "4 hours",
-        modules: 8,
-        progress: 0,
-      },
-    ],
+    id: 3,
+    title: 'Trees and Graphs',
+    description: 'Explore tree structures and graph algorithms',
+    duration: '4 hours',
+    lessons: 20,
+    progress: 0,
+    status: 'locked'
   },
+  {
+    id: 4,
+    title: 'Dynamic Programming',
+    description: 'Learn to solve complex problems using dynamic programming',
+    duration: '5 hours',
+    lessons: 25,
+    progress: 0,
+    status: 'locked'
+  }
 ];
 
-const Learn = () => {
-  const [selectedLevel, setSelectedLevel] = useState("Beginner");
-  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-
-  const getVideoId = (url: string) => {
-    const regExp =
-      /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
-    const match = url.match(regExp);
-    return match && match[7].length === 11 ? match[7] : null;
-  };
-
+export default function Learn() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-            Learning Center
-          </h1>
-          <button className="btn-primary">
-            <GraduationCap className="h-5 w-5 mr-2" />
-            Track Progress
-          </button>
-        </div>
+    <div className="p-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900">Learning Path</h1>
+        <p className="text-gray-600 mt-2">Master DSA with our structured curriculum</p>
+      </div>
 
-        {/* Video Player */}
-        {selectedVideo && (
-          <div className="mb-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-            <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
-              <iframe
-                src={`https://www.youtube.com/embed/${getVideoId(
-                  selectedVideo
-                )}?autoplay=1`}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="absolute top-0 left-0 w-full h-full rounded-lg"
-              ></iframe>
-            </div>
-            <button
-              onClick={() => setSelectedVideo(null)}
-              className="mt-4 text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300"
-            >
-              Close Video
-            </button>
+      {/* Progress Overview */}
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold text-gray-900">Your Progress</h2>
+          <div className="flex items-center space-x-2">
+            <Timer className="w-5 h-5 text-green-600" />
+            <span className="text-gray-600">12.5 hours completed</span>
           </div>
-        )}
-
-        {/* Level Selection */}
-        <div className="flex space-x-4 mb-8">
-          {courses.map(({ level, icon: Icon }) => (
-            <button
-              key={level}
-              onClick={() => setSelectedLevel(level)}
-              className={`flex-1 p-4 rounded-lg border ${
-                selectedLevel === level
-                  ? "border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20"
-                  : "border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
-              }`}
-            >
-              <div className="flex items-center justify-center">
-                <Icon
-                  className={`h-6 w-6 ${
-                    selectedLevel === level
-                      ? "text-indigo-500"
-                      : "text-gray-400 dark:text-gray-500"
-                  }`}
-                />
-                <span
-                  className={`ml-2 font-medium ${
-                    selectedLevel === level
-                      ? "text-indigo-700 dark:text-indigo-400"
-                      : "text-gray-700 dark:text-gray-300"
-                  }`}
-                >
-                  {level}
-                </span>
-              </div>
-            </button>
-          ))}
         </div>
+        <div className="w-full bg-gray-200 rounded-full h-2">
+          <div className="bg-green-600 h-2 rounded-full" style={{ width: '45%' }} />
+        </div>
+        <div className="flex justify-between mt-2 text-sm text-gray-600">
+          <span>45% Complete</span>
+          <span>20 of 72 lessons completed</span>
+        </div>
+      </div>
 
-        {/* Course and Video Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Regular Courses */}
-          {courses
-            .find((c) => c.level === selectedLevel)
-            ?.courses.map((course, index) => (
-              <div
-                key={index}
-                className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6"
+      {/* Course Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {courses.map((course) => (
+          <div 
+            key={course.id}
+            className={`bg-white rounded-xl shadow-sm overflow-hidden ${
+              course.status === 'locked' ? 'opacity-75' : ''
+            }`}
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <h3 className="text-xl font-bold text-gray-900">{course.title}</h3>
+                {course.status === 'completed' && (
+                  <CheckCircle2 className="w-6 h-6 text-green-600" />
+                )}
+                {course.status === 'locked' && (
+                  <Lock className="w-6 h-6 text-gray-400" />
+                )}
+              </div>
+              <p className="text-gray-600 mb-4">{course.description}</p>
+              <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                <div className="flex items-center space-x-2">
+                  <Timer className="w-4 h-4" />
+                  <span>{course.duration}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <BookOpen className="w-4 h-4" />
+                  <span>{course.lessons} lessons</span>
+                </div>
+              </div>
+              {course.status !== 'locked' && (
+                <div className="w-full bg-gray-200 rounded-full h-1.5 mb-4">
+                  <div 
+                    className="bg-green-600 h-1.5 rounded-full" 
+                    style={{ width: `${course.progress}%` }} 
+                  />
+                </div>
+              )}
+              <button
+                className={`w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-lg transition ${
+                  course.status === 'locked'
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-green-600 text-white hover:bg-green-700'
+                }`}
+                disabled={course.status === 'locked'}
               >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                      {course.title}
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                      {course.description}
-                    </p>
-                  </div>
-                  <div className="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400">
-                    <Shield className="h-4 w-4" />
-                    <span>{course.modules} modules</span>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Progress
-                    </span>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {course.progress}%
-                    </span>
-                  </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div
-                      className="bg-indigo-600 h-2 rounded-full transition-all duration-300"
-                      style={{ width: `${course.progress}%` }}
-                    ></div>
-                  </div>
-                </div>
-
-                <div className="mt-6 flex items-center justify-between">
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <BookOpen className="h-4 w-4 mr-1" />
-                    <span>{course.duration}</span>
-                  </div>
-                  <button className="btn-secondary">
-                    {course.progress > 0 ? "Continue" : "Start Course"}
-                  </button>
-                </div>
-              </div>
-            ))}
-
-          {/* Video Courses */}
-          {videos[selectedLevel as keyof typeof videos]?.map((video, index) => (
-            <div
-              key={`video-${index}`}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6"
-            >
-              <div className="flex items-start space-x-4">
-                <button
-                  onClick={() => setSelectedVideo(video.videolink)}
-                  className="flex-shrink-0 bg-indigo-100 dark:bg-indigo-900/50 rounded-lg p-3"
-                >
-                  <PlayCircle className="h-6 w-6 text-indigo-600 dark:text-indigo-400" />
-                </button>
-                <div className="flex-1">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                        {video.title}
-                      </h3>
-                      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        {video.description}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 flex items-center justify-between">
-                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                      <BookOpen className="h-4 w-4 mr-1" />
-                      <span>{video.duration}</span>
-                    </div>
-                    <button
-                      onClick={() => setSelectedVideo(video.videolink)}
-                      className="btn-secondary"
-                    >
-                      Watch Now
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Learning Path */}
-        <div className="mt-12">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
-            Your Learning Path
-          </h2>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-            <div className="relative">
-              {[
-                "Complete Beginner Courses",
-                "Start Technical Analysis",
-                "Master Portfolio Management",
-                "Explore Advanced Topics",
-              ].map((step, index) => (
-                <div key={index} className="flex items-start mb-8 last:mb-0">
-                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-600 dark:text-indigo-400 font-medium text-sm">
-                    {index + 1}
-                  </div>
-                  <div className="ml-4">
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-                      {step}
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                      {index === 0 ? "In Progress" : "Upcoming"}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                <PlayCircle className="w-5 h-5" />
+                <span>
+                  {course.status === 'completed' && 'Review Course'}
+                  {course.status === 'in-progress' && 'Continue Learning'}
+                  {course.status === 'locked' && 'Coming Soon'}
+                </span>
+              </button>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
-};
-
-export default Learn;
+}

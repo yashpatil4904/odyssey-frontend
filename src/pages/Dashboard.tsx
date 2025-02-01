@@ -1,11 +1,15 @@
 import React from 'react';
-import { UserButton } from '@clerk/clerk-react';
+import { Routes, Route, Outlet } from 'react-router-dom';
+import Sidebar from '../components/Sidebar';
+import DashboardHome from './DashboardHome';
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
-      <p className="text-gray-600">Welcome to your DSA learning dashboard!</p>
+    <div className="flex">
+      <Sidebar />
+      <main className="flex-1 ml-64 transition-all duration-300 bg-gray-50 min-h-screen">
+        <Outlet />
+      </main>
     </div>
   );
 } 
