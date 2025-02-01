@@ -9,17 +9,28 @@ import {
   Settings,
   User,
   Users,
-  Gamepad2
+  Gamepad2,
+  MessageSquare
 } from 'lucide-react';
 import { UserButton } from '@clerk/clerk-react';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-  { icon: BookOpen, label: 'Learning Path', path: '/dashboard/learning' },
   { icon: Code2, label: 'Practice', path: '/dashboard/practice' },
   { icon: Trophy, label: 'Contests', path: '/dashboard/contests' },
   { icon: Users, label: 'Leaderboard', path: '/dashboard/leaderboard' },
   { icon: Gamepad2, label: 'Arcade', path: '/dashboard/games' },
+  { icon: BookOpen, label: 'Learning Path', path: '/dsa-learning' },
+  { 
+    icon: MessageSquare, 
+    label: 'AI Assistant', 
+    onClick: () => {
+      const chatbotToggler = document.getElementById('chatbot-toggler');
+      if (chatbotToggler) {
+        chatbotToggler.click();
+      }
+    }
+  }
 ];
 
 export default function Sidebar() {
@@ -52,18 +63,28 @@ export default function Sidebar() {
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className={`flex items-center space-x-2 p-3 rounded-lg transition-colors ${
-                      location.pathname === item.path
-                        ? 'bg-green-50 text-green-600'
-                        : 'text-gray-600 hover:bg-gray-50'
-                    }`}
-                  >
-                    <Icon className="w-5 h-5" />
-                    {!isCollapsed && <span>{item.label}</span>}
-                  </Link>
+                <li key={item.path || item.label}>
+                  {item.path ? (
+                    <Link
+                      to={item.path}
+                      className={`flex items-center space-x-2 p-3 rounded-lg transition-colors ${
+                        location.pathname === item.path
+                          ? 'bg-green-50 text-green-600'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-green-600'
+                      }`}
+                    >
+                      <Icon className="w-5 h-5" />
+                      {!isCollapsed && <span>{item.label}</span>}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={item.onClick}
+                      className="flex items-center space-x-2 p-3 rounded-lg transition-colors w-full text-gray-600 hover:bg-gray-50 hover:text-green-600"
+                    >
+                      <Icon className="w-5 h-5" />
+                      {!isCollapsed && <span>{item.label}</span>}
+                    </button>
+                  )}
                 </li>
               );
             })}

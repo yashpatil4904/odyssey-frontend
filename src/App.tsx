@@ -23,6 +23,9 @@ import Learn from './pages/Learn';
 import DashboardHome from './pages/DashboardHome';
 import Leaderboard from './pages/Leaderboard';
 import Games from './pages/Games';
+import LearningPath from './pages/LearningPath';
+import DSALearning from './pages/DSALearning';
+import Chatbot from './components/chatbot/chatbot.jsx';
 
 function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
   return (
@@ -229,29 +232,54 @@ function LandingPage() {
 function AppContent() {
   const location = useLocation();
   const showNavbar = location.pathname === '/';
+  const showChatbot = location.pathname.includes('/dashboard') || location.pathname.includes('/dsa-learning');
 
   return (
     <>
       {showNavbar && <NavigationBar />}
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/sign-in/*" element={<SignInPage />} />
-        <Route path="/sign-up/*" element={<SignUpPage />} />
-        <Route
-          path="/dashboard/*"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<DashboardHome />} />
-          <Route path="learning" element={<Learn />} />
-          <Route path="leaderboard" element={<Leaderboard />} />
-          <Route path="games" element={<Games />} />
-          {/* Add other dashboard routes here */}
-        </Route>
-      </Routes>
+      <div className="relative">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/sign-in/*" element={<SignInPage />} />
+          <Route path="/sign-up/*" element={<SignUpPage />} />
+          <Route
+            path="/dashboard/*"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<DashboardHome />} />
+            <Route path="learning" element={<Learn />} />
+            <Route path="leaderboard" element={<Leaderboard />} />
+            <Route path="games" element={<Games />} />
+            {/* Add other dashboard routes here */}
+          </Route>
+          <Route 
+            path="/learning-path" 
+            element={
+              <ProtectedRoute>
+                <LearningPath />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dsa-learning" 
+            element={
+              <ProtectedRoute>
+                <DSALearning />
+              </ProtectedRoute>
+            } 
+          />
+        </Routes>
+      </div>
+      {/* Only show Chatbot on dashboard and dsa-learning pages */}
+      {showChatbot && (
+        <div className="fixed z-50">
+          <Chatbot />
+        </div>
+      )}
     </>
   );
 }
