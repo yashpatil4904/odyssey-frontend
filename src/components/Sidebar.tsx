@@ -8,19 +8,21 @@ import {
   Trophy,
   Settings,
   User,
+  Brain,
   Users,
   Gamepad2,
   MessageSquare,
   ChevronRight
 } from 'lucide-react';
 import { UserButton, useUser } from '@clerk/clerk-react';
+import logo from '../assets/images/CodeCore logo_Black Background.png';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+  { icon: Brain, label: 'Challenges', path: '/dashboard/challenges' },
   { icon: Code2, label: 'Simulations', path: '/dashboard/simulations' },
   { icon: Users, label: 'Leaderboard', path: '/dashboard/leaderboard' },
   { icon: Gamepad2, label: 'Arcade', path: '/dashboard/games' },
-
   { icon: BookOpen, label: 'Learning Path', path: '/dsa-learning' },
   { 
     icon: MessageSquare, 
@@ -53,7 +55,16 @@ export default function Sidebar() {
       <div className="flex flex-col h-full">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          {!isCollapsed && <span className="text-xl font-bold text-green-600">CodeCore</span>}
+          {!isCollapsed && (
+            <Link to="/" className="flex items-center gap-2">
+              <img 
+                src={logo} 
+                alt="CodeCore Logo" 
+                className="h-8 w-8 object-contain rounded-full"
+              />
+              <span className="text-xl font-bold text-green-600">CodeCore</span>
+            </Link>
+          )}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className={`p-2 rounded-lg hover:bg-gray-100 transition-transform duration-300 ${

@@ -19,3 +19,8 @@
   overflow: hidden;
   clip-path: inset(0px 0px 100px 0px); /* Crops 100px from the bottom */
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+

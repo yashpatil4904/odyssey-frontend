@@ -18,6 +18,7 @@ import {
   Brain
 } from 'lucide-react';
 import axios from 'axios';
+import { TypeAnimation } from 'react-type-animation';
 
 interface PlatformStats {
   [key: string]: any;  // This allows dynamic access to platform stats

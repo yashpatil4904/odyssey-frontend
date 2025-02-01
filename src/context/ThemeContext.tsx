@@ -1,32 +1,40 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-
-type Theme = 'light' | 'dark';
-
-interface ThemeContextType {
-  theme: Theme;
-  toggleTheme: () => void;
-}
+import { ThemeContextType } from '../types';
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return (savedTheme as Theme) || 'light';
+  // Initialize with light mode (isDarkMode = false)
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    // Get from localStorage, explicitly return false if not set
+    const savedMode = localStorage.getItem('darkMode');
+    return savedMode === 'true' ? true : false;  // Default to false (light mode)
   });
 
   useEffect(() => {
-    localStorage.setItem('theme', theme);
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(theme);
-  }, [theme]);
+    // Remove dark class on initial load
+    document.documentElement.classList.remove('dark');
+    
+    // Update classes and localStorage when theme changes
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('darkMode', String(isDarkMode));
+  }, [isDarkMode]);
 
   const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    setIsDarkMode(prev => !prev);
   };
 
+  // Force light mode on initial load
+  useEffect(() => {
+    document.documentElement.classList.remove('dark');
+  }, []);
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
