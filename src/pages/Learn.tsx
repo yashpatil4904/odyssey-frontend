@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft, BookOpen, Code2, Target, FileText } from 'lucide-react';
+import Spline from '@splinetool/react-spline';
 import DSAResources from '../components/DSAResources';
 
 type IconType = typeof BookOpen;
@@ -89,116 +90,132 @@ const Learn = () => {
 
   if (!selectedCourse) {
     return (
-      <div className="p-8 bg-white dark:bg-gray-900">
-        <DSAResources />
-        <div className="mb-8">
-          <select
-            value={selectedLevel}
-            onChange={(e) => setSelectedLevel(e.target.value)}
-            className="block w-full max-w-xs px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-200 dark:border-gray-700 focus:border-green-600 focus:outline-none"
-          >
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-          </select>
+      <div className="relative min-h-screen">
+        {/* Spline Background */}
+        <div className="fixed inset-0 z-0">
+          <Spline scene="https://prod.spline.design/oo6IxFu8UZvDTHBD/scene.splinecode" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {courses
-            .filter((course) => course.level === selectedLevel)
-            .map((course) => (
-              <div
-                key={course.id}
-                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 cursor-pointer hover:border-green-600 transition-all group shadow-sm"
-                onClick={() => setSelectedCourse(course)}
-              >
-                <div className="flex items-center mb-4">
-                  <div className="p-3 bg-green-50 dark:bg-gray-700 rounded-lg group-hover:bg-green-100 dark:group-hover:bg-gray-600">
-                    <course.icon className="w-6 h-6 text-green-600" />
+        {/* Content */}
+        <div className="relative z-10 p-8">
+          <DSAResources />
+          <div className="mb-8 backdrop-blur-sm bg-white/30 dark:bg-gray-900/30 p-6 rounded-xl">
+            <select
+              value={selectedLevel}
+              onChange={(e) => setSelectedLevel(e.target.value)}
+              className="block w-full max-w-xs px-4 py-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 rounded-lg border border-gray-200 dark:border-gray-700 focus:border-green-600 focus:outline-none"
+            >
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses
+              .filter((course) => course.level === selectedLevel)
+              .map((course) => (
+                <div
+                  key={course.id}
+                  className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 border border-gray-200/50 dark:border-gray-700/50 rounded-xl p-6 cursor-pointer hover:border-green-600 transition-all group shadow-lg hover:shadow-xl"
+                  onClick={() => setSelectedCourse(course)}
+                >
+                  <div className="flex items-center mb-4">
+                    <div className="p-3 bg-green-50/80 dark:bg-gray-700/80 rounded-lg group-hover:bg-green-100 dark:group-hover:bg-gray-600">
+                      <course.icon className="w-6 h-6 text-green-600" />
+                    </div>
+                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white ml-4">{course.title}</h2>
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white ml-4">{course.title}</h2>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">{course.description}</p>
+                  <div className="text-sm text-green-600 font-medium">Duration: {course.duration}</div>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{course.description}</p>
-                <div className="text-sm text-green-600">Duration: {course.duration}</div>
-              </div>
-            ))}
+              ))}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-8 bg-white dark:bg-gray-900">
-      <button
-        onClick={handleBackClick}
-        className="flex items-center text-gray-600 dark:text-gray-400 hover:text-green-600 mb-6 transition-colors"
-      >
-        <ArrowLeft className="w-5 h-5 mr-2" />
-        Back to Courses
-      </button>
+    <div className="relative min-h-screen">
+      {/* Spline Background */}
+      <div className="fixed inset-0 z-0">
+        <Spline scene="https://prod.spline.design/oo6IxFu8UZvDTHBD/scene.splinecode" />
+      </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8">
-        <div className="flex items-center mb-6">
-          <div className="bg-green-50 dark:bg-gray-700 p-3 rounded-lg">
-            <selectedCourse.icon className="w-8 h-8 text-green-600" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedCourse.title}</h1>
-            <p className="text-gray-600 dark:text-gray-400">{selectedCourse.level} Level</p>
-          </div>
-        </div>
+      {/* Content */}
+      <div className="relative z-10 p-8">
+        <button
+          onClick={handleBackClick}
+          className="flex items-center text-gray-600 dark:text-gray-400 hover:text-green-600 mb-6 transition-colors backdrop-blur-sm bg-white/30 dark:bg-gray-900/30 px-4 py-2 rounded-lg"
+        >
+          <ArrowLeft className="w-5 h-5 mr-2" />
+          Back to Courses
+        </button>
 
-        <div className="space-y-8">
-          {selectedCourse.topics.map((topic, index) => (
-            <div key={index} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{topic.name}</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">{topic.description}</p>
-
-              {/* PDF Resources */}
-              <div className="mb-6">
-                <h4 className="text-lg font-semibold mb-3 flex items-center text-gray-900 dark:text-white">
-                  <FileText className="w-5 h-5 text-green-600 mr-2" />
-                  Topic Resources
-                </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {topic.pdfResources.map((resource, idx) => (
-                    <a
-                      key={idx}
-                      href={resource.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center p-3 bg-white dark:bg-gray-600 rounded-lg hover:shadow-md transition-shadow"
-                    >
-                      <FileText className="w-5 h-5 text-green-600 mr-2" />
-                      <span className="text-gray-700 dark:text-gray-200">{resource.title}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              {/* Video Section */}
-              <div className="aspect-w-16 aspect-h-9 mb-4">
-                <iframe
-                  src={topic.videoUrl}
-                  title={topic.name}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="rounded-lg w-full h-full"
-                />
-              </div>
-
-              {/* Practice Link */}
-              <a
-                href={topic.practiceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-green-600 hover:text-green-700"
-              >
-                <Code2 className="w-5 h-5 mr-2" />
-                Practice Problems
-              </a>
+        <div className="backdrop-blur-sm bg-white/50 dark:bg-gray-800/50 rounded-xl shadow-lg p-8">
+          <div className="flex items-center mb-6">
+            <div className="bg-green-50/80 dark:bg-gray-700/80 p-3 rounded-lg">
+              <selectedCourse.icon className="w-8 h-8 text-green-600" />
             </div>
-          ))}
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedCourse.title}</h1>
+              <p className="text-gray-600 dark:text-gray-400">{selectedCourse.level} Level</p>
+            </div>
+          </div>
+
+          <div className="space-y-8">
+            {selectedCourse.topics.map((topic, index) => (
+              <div key={index} className="bg-gray-50/80 dark:bg-gray-700/80 rounded-lg p-6">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">{topic.name}</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">{topic.description}</p>
+
+                {/* PDF Resources */}
+                <div className="mb-6">
+                  <h4 className="text-lg font-semibold mb-3 flex items-center text-gray-900 dark:text-white">
+                    <FileText className="w-5 h-5 text-green-600 mr-2" />
+                    Topic Resources
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {topic.pdfResources.map((resource, idx) => (
+                      <a
+                        key={idx}
+                        href={resource.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center p-3 bg-white/80 dark:bg-gray-600/80 rounded-lg hover:shadow-md transition-shadow"
+                      >
+                        <FileText className="w-5 h-5 text-green-600 mr-2" />
+                        <span className="text-gray-700 dark:text-gray-200">{resource.title}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Video Section */}
+                <div className="aspect-w-16 aspect-h-9 mb-4">
+                  <iframe
+                    src={topic.videoUrl}
+                    title={topic.name}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="rounded-lg w-full h-full shadow-lg"
+                  />
+                </div>
+
+                {/* Practice Link */}
+                <a
+                  href={topic.practiceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-4 py-2 bg-green-600/90 text-white rounded-lg hover:bg-green-700/90 transition-colors"
+                >
+                  <Code2 className="w-5 h-5 mr-2" />
+                  Practice Problems
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

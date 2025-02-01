@@ -10,7 +10,9 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
   return (
     <DashboardTour>
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-        <Sidebar />
+        <div className="z-30 relative">
+          <Sidebar />
+        </div>
         <div className="ml-64">
           {children}
         </div>
