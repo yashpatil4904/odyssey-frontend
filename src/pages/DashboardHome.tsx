@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-import React from 'react';
-import { BookOpen, Code2, Trophy, Timer } from 'lucide-react';
-import { TypeAnimation } from 'react-type-animation';
-=======
 import React, { useState, useEffect } from 'react';
 import { 
   BookOpen, 
@@ -23,7 +18,7 @@ import {
   Brain
 } from 'lucide-react';
 import axios from 'axios';
->>>>>>> a1fea3ff3e8d156cb92687405d5a2e9f4dde0f2c
+import { TypeAnimation } from 'react-type-animation';
 
 interface PlatformStats {
   [key: string]: any;  // This allows dynamic access to platform stats
@@ -280,32 +275,6 @@ export default function DashboardHome() {
   }, []);
 
   return (
-<<<<<<< HEAD
-    <div>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">
-          <span className="text-gray-900">Master DSA with </span>
-          <TypeAnimation
-            sequence={[
-              'Confidence',
-              1000,
-              'Excellence',
-              1000,
-              'Precision',
-              1000,
-              'Purpose',
-              1000,
-              'Passion',
-              1000,
-            ]}
-            wrapper="span"
-            speed={50}
-            repeat={Infinity}
-            className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-green-700"
-          />
-        </h1>
-        <p className="text-gray-600 mt-2">Track your progress and keep learning</p>
-=======
     <div className="space-y-8 p-8 bg-gray-50/[0.02] min-h-screen">
       {/* Header Section with Grid Pattern */}
       <div className="relative overflow-hidden bg-gray-50/[0.02] rounded-2xl shadow-lg p-8">
@@ -346,7 +315,6 @@ export default function DashboardHome() {
             </div>
           </div>
         </div>
->>>>>>> a1fea3ff3e8d156cb92687405d5a2e9f4dde0f2c
       </div>
 
       {/* Stats Grid */}
