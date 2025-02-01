@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   ChevronLeft, 
   LayoutDashboard, 
@@ -10,24 +10,41 @@ import {
   User,
   Brain,
   Users,
-  Gamepad2
+  Gamepad2,
+  MessageSquare,
+  ChevronRight
 } from 'lucide-react';
-import { UserButton } from '@clerk/clerk-react';
+import { UserButton, useUser } from '@clerk/clerk-react';
 import logo from '../assets/images/CodeCore logo_Black Background.png';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-  { icon: BookOpen, label: 'Learning Path', path: '/dashboard/learning' },
-  { icon: Code2, label: 'Practice', path: '/dashboard/practice' },
-  { icon: Trophy, label: 'Contests', path: '/dashboard/contests' },
   { icon: Brain, label: 'Challenges', path: '/dashboard/challenges' },
+  { icon: Code2, label: 'Simulations', path: '/dashboard/simulations' },
   { icon: Users, label: 'Leaderboard', path: '/dashboard/leaderboard' },
   { icon: Gamepad2, label: 'Arcade', path: '/dashboard/games' },
+  { icon: BookOpen, label: 'Learning Path', path: '/dsa-learning' },
+  { 
+    icon: MessageSquare, 
+    label: 'AI Assistant', 
+    onClick: () => {
+      const chatbotToggler = document.getElementById('chatbot-toggler');
+      if (chatbotToggler) {
+        chatbotToggler.click();
+      }
+    }
+  }
 ];
 
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useUser();
+
+  const handleProfileClick = () => {
+    navigate('/dashboard/profile');
+  };
 
   return (
     <div
@@ -64,37 +81,53 @@ export default function Sidebar() {
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
-                <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    className={`flex items-center space-x-2 p-3 rounded-lg transition-colors ${
-                      location.pathname === item.path
-                        ? 'bg-green-50 text-green-600'
-                        : 'text-gray-600 hover:bg-gray-50'
-                    }`}
-                  >
-                    <Icon className="w-5 h-5" />
-                    {!isCollapsed && <span>{item.label}</span>}
-                  </Link>
+                <li key={item.path || item.label}>
+                  {item.path ? (
+                    <Link
+                      to={item.path}
+                      className={`flex items-center space-x-2 p-3 rounded-lg transition-colors ${
+                        location.pathname === item.path
+                          ? 'bg-green-50 text-green-600'
+                          : 'text-gray-600 hover:bg-gray-50 hover:text-green-600'
+                      }`}
+                    >
+                      <Icon className="w-5 h-5" />
+                      {!isCollapsed && <span>{item.label}</span>}
+                    </Link>
+                  ) : (
+                    <button
+                      onClick={item.onClick}
+                      className="flex items-center space-x-2 p-3 rounded-lg transition-colors w-full text-gray-600 hover:bg-gray-50 hover:text-green-600"
+                    >
+                      <Icon className="w-5 h-5" />
+                      {!isCollapsed && <span>{item.label}</span>}
+                    </button>
+                  )}
                 </li>
               );
             })}
           </ul>
         </nav>
 
-        {/* Footer */}
+        {/* Updated Footer */}
         <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center space-x-3">
+          <div 
+            onClick={handleProfileClick}
+            className="flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors group"
+          >
             <UserButton />
             {!isCollapsed && (
-              <div className="flex-1">
-                <Link
-                  to="/dashboard/settings"
-                  className="text-sm text-gray-600 hover:text-green-600"
-                >
-                  Settings
-                </Link>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {user?.fullName}
+                </p>
+                <p className="text-xs text-gray-500 truncate">
+                  {user?.primaryEmailAddress?.emailAddress}
+                </p>
               </div>
+            )}
+            {!isCollapsed && (
+              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
             )}
           </div>
         </div>

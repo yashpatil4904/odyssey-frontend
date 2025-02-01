@@ -1,20 +1,14 @@
 import React from 'react';
 import {
-  BookOpen,
   Code2,
   Trophy,
   Users,
-  Target,
   Brain,
-  Timer,
-  MessageSquare,
   Award,
   GitBranch,
-  Rocket,
-  Building2
 } from 'lucide-react';
-import { ClerkProvider, SignIn, SignUp, useAuth, UserButton } from '@clerk/clerk-react';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate, useLocation, Outlet } from 'react-router-dom';
+import { ClerkProvider,useAuth, UserButton } from '@clerk/clerk-react';
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignInPage from './pages/SignIn';
@@ -32,6 +26,11 @@ import DailyChallenges from './pages/DailyChallenges';
 import WeeklyChallenges from './pages/WeeklyChallenges';
 import { TypeAnimation } from 'react-type-animation';
 import logo from './assets/images/CodeCore logo_Black Background.png';
+import LearningPath from './pages/LearningPath';
+import DSALearning from './pages/DSALearning';
+import Chatbot from './components/chatbot/chatbot';
+import Profile from './pages/Profile';
+import Simulations from './pages/Simulations';
 
 function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
   return (
@@ -261,34 +260,61 @@ function LandingPage() {
 function AppContent() {
   const location = useLocation();
   const showNavbar = location.pathname === '/';
+  const showChatbot = location.pathname.includes('/dashboard') || location.pathname.includes('/dsa-learning');
 
   return (
     <>
       {showNavbar && <NavigationBar />}
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/sign-in/*" element={<SignInPage />} />
-        <Route path="/sign-up/*" element={<SignUpPage />} />
-        <Route
-          path="/dashboard/*"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<DashboardHome />} />
-          <Route path="learning" element={<Learn />} />
-          <Route path="challenges" element={<Challenges />} />
+      <div className="relative">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/sign-in/*" element={<SignInPage />} />
+          <Route path="/sign-up/*" element={<SignUpPage />} />
+          <Route
+            path="/dashboard/*"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<DashboardHome />} />
+            <Route path="learning" element={<Learn />} />
+            <Route path="challenges" element={<Challenges />} />
           <Route path="challenges/all" element={<AllChallenges />} />
           <Route path="challenges/daily" element={<DailyChallenges />} />
           <Route path="challenges/weekly" element={<WeeklyChallenges />} />
           <Route path="challenges/:id" element={<ProblemPage />} />
-          <Route path="leaderboard" element={<Leaderboard />} />
-          <Route path="games" element={<Games />} />
-          {/* Add other dashboard routes here */}
-        </Route>
-      </Routes>
+            <Route path="leaderboard" element={<Leaderboard />} />
+            <Route path="games" element={<Games />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="simulations" element={<Simulations />} />
+            {/* Add other dashboard routes here */}
+          </Route>
+          <Route 
+            path="/learning-path" 
+            element={
+              <ProtectedRoute>
+                <LearningPath />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/dsa-learning" 
+            element={
+              <ProtectedRoute>
+                <DSALearning />
+              </ProtectedRoute>
+            } 
+          />
+        </Routes>
+      </div>
+      {/* Only show Chatbot on dashboard and dsa-learning pages */}
+      {showChatbot && (
+        <div className="fixed z-50">
+          <Chatbot />
+        </div>
+      )}
     </>
   );
 }

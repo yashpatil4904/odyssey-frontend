@@ -29,8 +29,6 @@ interface Game {
 
 export default function Games() {
   const [selectedGame, setSelectedGame] = useState<string | null>(null);
-  const [isSpinning, setIsSpinning] = useState(false);
-  const [spinDegrees, setSpinDegrees] = useState(0);
   const [games, setGames] = useState<Game[]>([
     {
       id: 'clutch',
@@ -62,41 +60,9 @@ export default function Games() {
     }
   ]);
 
-  const handleSpin = () => {
-    setIsSpinning(true);
-    const degrees = 1800 + Math.floor(Math.random() * 360);
-    setSpinDegrees(degrees);
-
-    setTimeout(() => {
-      setIsSpinning(false);
-      const reward = Math.floor(Math.random() * 500) + 100;
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-      toast.success(
-        <div className="flex flex-col">
-          <span className="text-lg font-bold">🎉 Congratulations!</span>
-          <span>You won {reward} XP!</span>
-        </div>
-      );
-      
-      setGames(prev => prev.map(game => 
-        game.id === 'spin' 
-          ? { ...game, status: 'cooldown' as const, cooldownTime: 24 } 
-          : game
-      ));
-    }, 3000);
-  };
-
   const handleGameClick = (game: Game) => {
     if (game.status !== 'available') return;
-    
     setSelectedGame(game.id);
-    if (game.type === 'spin') {
-      handleSpin();
-    }
   };
 
   return (
@@ -157,8 +123,6 @@ export default function Games() {
       )}
       {selectedGame === 'spin' && (
         <LuckSpinModal 
-          isSpinning={isSpinning} 
-          spinDegrees={spinDegrees}
           onClose={() => setSelectedGame(null)} 
         />
       )}
