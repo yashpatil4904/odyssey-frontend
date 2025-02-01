@@ -12,10 +12,10 @@ import {
   Users,
   Gamepad2,
   MessageSquare,
-  ChevronRight
+  ChevronRight,
+  Globe,
 } from 'lucide-react';
 import { UserButton, useUser } from '@clerk/clerk-react';
-import logo from '../assets/images/CodeCore logo_Black Background.png';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
@@ -57,11 +57,7 @@ export default function Sidebar() {
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           {!isCollapsed && (
             <Link to="/" className="flex items-center gap-2">
-              <img 
-                src={logo} 
-                alt="CodeCore Logo" 
-                className="h-8 w-8 object-contain rounded-full"
-              />
+              <Globe className="h-8 w-8 text-green-600" />
               <span className="text-xl font-bold text-green-600">CodeCore</span>
             </Link>
           )}
