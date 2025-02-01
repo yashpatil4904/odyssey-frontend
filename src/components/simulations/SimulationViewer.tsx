@@ -4,12 +4,14 @@ import { ArrowLeft, Play, Pause, RotateCcw, ChevronRight, Info } from 'lucide-re
 import * as d3 from 'd3';
 import { mergeSortVisualization } from './algorithms/mergeSort';
 import { bfsVisualization } from './algorithms/bfs';
+import VideoPlayer from './VideoPlayer';
 
 interface SimulationViewerProps {
   topic: {
     id: string;
     title: string;
     description: string;
+    videoUrl: string;
   };
   onClose: () => void;
 }
@@ -277,52 +279,66 @@ export default function SimulationViewer({ topic, onClose }: SimulationViewerPro
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Visualization Area */}
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-            <div className="aspect-video bg-gray-50 rounded-lg overflow-hidden">
-              <svg
-                ref={svgRef}
-                className="w-full h-full"
-                style={{ minHeight: '400px' }}
-                viewBox="0 0 800 400"
-                preserveAspectRatio="xMidYMid meet"
-              />
-            </div>
-            {/* Controls */}
-            <div className="mt-4 flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="p-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-100"
-                >
-                  {isPlaying ? (
-                    <Pause className="w-5 h-5" />
-                  ) : (
-                    <Play className="w-5 h-5" />
-                  )}
-                </button>
-                <button
-                  onClick={() => {
-                    setCurrentStep(0);
-                    setIsPlaying(false);
-                  }}
-                  className="p-2 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100"
-                >
-                  <RotateCcw className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="w-full max-w-md mx-4">
-                <input
-                  type="range"
-                  min="0"
-                  max={steps.length - 1}
-                  value={currentStep}
-                  onChange={(e) => setCurrentStep(parseInt(e.target.value))}
-                  className="w-full"
+          <div className="lg:col-span-2 space-y-6">
+            {/* D3 Visualization */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <div className="aspect-video bg-gray-50 rounded-lg overflow-hidden">
+                <svg
+                  ref={svgRef}
+                  className="w-full h-full"
+                  style={{ minHeight: '400px' }}
+                  viewBox="0 0 800 400"
+                  preserveAspectRatio="xMidYMid meet"
                 />
               </div>
-              <span className="text-sm text-gray-500">
-                Step {currentStep + 1}/{steps.length}
-              </span>
+              {/* Controls */}
+              <div className="mt-4 flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    className="p-2 rounded-lg bg-green-50 text-green-600 hover:bg-green-100"
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-5 h-5" />
+                    ) : (
+                      <Play className="w-5 h-5" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setCurrentStep(0);
+                      setIsPlaying(false);
+                    }}
+                    className="p-2 rounded-lg bg-gray-50 text-gray-600 hover:bg-gray-100"
+                  >
+                    <RotateCcw className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="w-full max-w-md mx-4">
+                  <input
+                    type="range"
+                    min="0"
+                    max={steps.length - 1}
+                    value={currentStep}
+                    onChange={(e) => setCurrentStep(parseInt(e.target.value))}
+                    className="w-full"
+                  />
+                </div>
+                <span className="text-sm text-gray-500">
+                  Step {currentStep + 1}/{steps.length}
+                </span>
+              </div>
+            </div>
+
+            {/* Video Demonstration */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Video Demonstration
+              </h3>
+              <VideoPlayer 
+                videoUrl={topic.videoUrl} 
+                title={`${topic.title} Demonstration`}
+              />
             </div>
           </div>
 
@@ -337,7 +353,6 @@ export default function SimulationViewer({ topic, onClose }: SimulationViewerPro
                 {topic.title}
               </h2>
               <div className="prose prose-green">
-                {/* Add detailed explanation based on topic.id */}
                 <p>{topic.description}</p>
                 {/* Add more content... */}
               </div>
