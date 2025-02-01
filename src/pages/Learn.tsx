@@ -1,6 +1,11 @@
+<<<<<<< HEAD
+// import React from 'react';
+import { BookOpen, CheckCircle2, Lock, PlayCircle, Timer } from 'lucide-react';
+=======
 import { useState } from 'react';
 import { ArrowLeft, BookOpen, Code2, Target, FileText } from 'lucide-react';
 import DSAResources from '../components/DSAResources';
+>>>>>>> a1fea3ff3e8d156cb92687405d5a2e9f4dde0f2c
 
 type IconType = typeof BookOpen;
 
