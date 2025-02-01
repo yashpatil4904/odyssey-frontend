@@ -25,7 +25,7 @@ import AllChallenges from './pages/AllChallenges';
 import DailyChallenges from './pages/DailyChallenges';
 import WeeklyChallenges from './pages/WeeklyChallenges';
 import { TypeAnimation } from 'react-type-animation';
-import logo from './assets/Images/CodeCore logo_Black Background.png';
+import logo from './assets/images/CodeCore-logo-black.png';
 import LearningPath from './pages/LearningPath';
 import DSALearning from './pages/DSALearning';
 import Chatbot from './components/chatbot/chatbot';
