@@ -7,7 +7,9 @@ import {
   Code2, 
   Trophy,
   Settings,
-  User
+  User,
+  Users,
+  Gamepad2
 } from 'lucide-react';
 import { UserButton } from '@clerk/clerk-react';
 
@@ -16,6 +18,8 @@ const menuItems = [
   { icon: BookOpen, label: 'Learning Path', path: '/dashboard/learning' },
   { icon: Code2, label: 'Practice', path: '/dashboard/practice' },
   { icon: Trophy, label: 'Contests', path: '/dashboard/contests' },
+  { icon: Users, label: 'Leaderboard', path: '/dashboard/leaderboard' },
+  { icon: Gamepad2, label: 'Arcade', path: '/dashboard/games' },
 ];
 
 export default function Sidebar() {

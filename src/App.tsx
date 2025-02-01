@@ -21,6 +21,8 @@ import SignInPage from './pages/SignIn';
 import SignUpPage from './pages/SignUp';
 import Learn from './pages/Learn';
 import DashboardHome from './pages/DashboardHome';
+import Leaderboard from './pages/Leaderboard';
+import Games from './pages/Games';
 
 function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
   return (
@@ -245,6 +247,8 @@ function AppContent() {
         >
           <Route index element={<DashboardHome />} />
           <Route path="learning" element={<Learn />} />
+          <Route path="leaderboard" element={<Leaderboard />} />
+          <Route path="games" element={<Games />} />
           {/* Add other dashboard routes here */}
         </Route>
       </Routes>
