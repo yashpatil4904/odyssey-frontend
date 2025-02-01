@@ -25,7 +25,7 @@ import Leaderboard from './pages/Leaderboard';
 import Games from './pages/Games';
 import LearningPath from './pages/LearningPath';
 import DSALearning from './pages/DSALearning';
-import Chatbot from './components/chatbot/chatbot.jsx';
+import Chatbot from './components/chatbot/chatbot';
 
 function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
   return (
