@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   ChevronLeft, 
   LayoutDashboard, 
@@ -10,16 +10,17 @@ import {
   User,
   Users,
   Gamepad2,
-  MessageSquare
+  MessageSquare,
+  ChevronRight
 } from 'lucide-react';
-import { UserButton } from '@clerk/clerk-react';
+import { UserButton, useUser } from '@clerk/clerk-react';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
-  { icon: Code2, label: 'Practice', path: '/dashboard/practice' },
-  { icon: Trophy, label: 'Contests', path: '/dashboard/contests' },
+  { icon: Code2, label: 'Simulations', path: '/dashboard/simulations' },
   { icon: Users, label: 'Leaderboard', path: '/dashboard/leaderboard' },
   { icon: Gamepad2, label: 'Arcade', path: '/dashboard/games' },
+
   { icon: BookOpen, label: 'Learning Path', path: '/dsa-learning' },
   { 
     icon: MessageSquare, 
@@ -36,6 +37,12 @@ const menuItems = [
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user } = useUser();
+
+  const handleProfileClick = () => {
+    navigate('/dashboard/profile');
+  };
 
   return (
     <div
@@ -91,19 +98,25 @@ export default function Sidebar() {
           </ul>
         </nav>
 
-        {/* Footer */}
+        {/* Updated Footer */}
         <div className="p-4 border-t border-gray-200">
-          <div className="flex items-center space-x-3">
+          <div 
+            onClick={handleProfileClick}
+            className="flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors group"
+          >
             <UserButton />
             {!isCollapsed && (
-              <div className="flex-1">
-                <Link
-                  to="/dashboard/settings"
-                  className="text-sm text-gray-600 hover:text-green-600"
-                >
-                  Settings
-                </Link>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-gray-900 truncate">
+                  {user?.fullName}
+                </p>
+                <p className="text-xs text-gray-500 truncate">
+                  {user?.primaryEmailAddress?.emailAddress}
+                </p>
               </div>
+            )}
+            {!isCollapsed && (
+              <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />
             )}
           </div>
         </div>

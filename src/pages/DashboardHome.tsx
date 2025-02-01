@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   BookOpen, 
   Code2, 
@@ -17,8 +17,10 @@ import {
   Coffee,
   Brain
 } from 'lucide-react';
+import axios from 'axios';
 
 interface PlatformStats {
+  [key: string]: any;  // This allows dynamic access to platform stats
   leetcode?: {
     solved: number;
     ranking: number;
@@ -33,7 +35,46 @@ interface PlatformStats {
   };
 }
 
-const stats = [
+interface LeetCodeStats {
+  totalSolved: number;
+  ranking: number;
+  contributionPoints: number;
+  reputation: number;
+  submissionCalendar: {
+    [key: string]: number;
+  };
+}
+
+interface CodeForcesStats {
+  result: [{
+    handle: string;
+    rating: number;
+    rank: string;
+    maxRating: number;
+    maxRank: string;
+  }];
+}
+
+interface PlatformError {
+  platform: string;
+  message: string;
+}
+
+interface StatItem {
+  label: string;
+  value: string;
+  icon: React.ElementType;
+  gradient: string;
+  increase: string;
+}
+
+interface Achievement {
+  name: string;
+  progress: number;
+  icon: React.ElementType;
+}
+
+const stats: StatItem[] = [
   { 
     label: 'Problems Solved', 
     value: '150', 
@@ -64,7 +105,7 @@ const stats = [
   },
 ];
 
-const achievements = [
+const achievements: Achievement[] = [
   { name: '7 Day Streak', progress: 70, icon: Flame },
   { name: 'Problem Solver', progress: 45, icon: Code2 },
   { name: 'Quick Learner', progress: 90, icon: Timer },
@@ -86,15 +127,151 @@ export default function DashboardHome() {
     }
   });
 
-  const [isConnecting, setIsConnecting] = useState(false);
+  const [isConnecting, setIsConnecting] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [errors, setErrors] = useState<PlatformError[]>([]);
 
-  const handleConnectPlatform = (platform: string) => {
-    setIsConnecting(true);
-    // Implement platform connection logic here
-    setTimeout(() => {
-      setIsConnecting(false);
-    }, 1500);
+  const fetchLeetCodeStats = async (username: string): Promise<void> => {
+    try {
+      const response = await axios.get(`https://leetcode-stats-api.herokuapp.com/${username}`);
+      const data: LeetCodeStats = response.data;
+
+      setPlatformStats(prev => ({
+        ...prev,
+        leetcode: {
+          solved: data.totalSolved,
+          ranking: data.ranking,
+          contestRating: data.contributionPoints,
+          submissions: Object.values(data.submissionCalendar || {}).reduce((a, b) => a + b, 0)
+        }
+      }));
+
+      setErrors(prev => prev.filter(error => error.platform !== 'leetcode'));
+    } catch (error) {
+      setErrors(prev => [
+        ...prev.filter(e => e.platform !== 'leetcode'),
+        { platform: 'leetcode', message: 'Failed to fetch LeetCode stats' }
+      ]);
+    }
   };
+
+  const fetchCodeforcesStats = async (handle: string): Promise<void> => {
+    try {
+      const response = await axios.get(`https://codeforces.com/api/user.info?handles=${handle}`);
+      const data: CodeForcesStats = response.data;
+      const userInfo = data.result[0];
+
+      setPlatformStats(prev => ({
+        ...prev,
+        codeforces: {
+          rating: userInfo.rating,
+          rank: userInfo.rank,
+          problemsSolved: 0, // Need separate API call for this
+          contests: userInfo.maxRating
+        }
+      }));
+
+      // Fetch solved problems count
+      const submissionsResponse = await axios.get(
+        `https://codeforces.com/api/user.status?handle=${handle}&from=1&count=1000`
+      );
+      const solvedProblems = new Set(
+        submissionsResponse.data.result
+          .filter((sub: any) => sub.verdict === 'OK')
+          .map((sub: any) => `${sub.problem.contestId}${sub.problem.index}`)
+      );
+
+      setPlatformStats(prev => ({
+        ...prev,
+        codeforces: {
+          ...prev.codeforces!,
+          problemsSolved: solvedProblems.size
+        }
+      }));
+
+      setErrors(prev => prev.filter(error => error.platform !== 'codeforces'));
+    } catch (error) {
+      setErrors(prev => [
+        ...prev.filter(e => e.platform !== 'codeforces'),
+        { platform: 'codeforces', message: 'Failed to fetch CodeForces stats' }
+      ]);
+    }
+  };
+
+  const handleConnectPlatform = async (platform: string): Promise<void> => {
+    setIsLoading(true);
+    try {
+      if (platform === 'leetcode') {
+        // You would typically get this from user input or settings
+        const leetcodeUsername = 'rachitst';
+        await fetchLeetCodeStats(leetcodeUsername);
+      } else if (platform === 'codeforces') {
+        // You would typically get this from user input or settings
+        const codeforcesHandle = 'rachitst';
+        await fetchCodeforcesStats(codeforcesHandle);
+      }
+    } catch (error) {
+      console.error(`Failed to connect to ${platform}:`, error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const renderError = (platform: string): JSX.Element | null => {
+    const error = errors.find(e => e.platform === platform);
+    if (error) {
+      return (
+        <div className="text-red-500 text-sm mt-2 flex items-center gap-2">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {error.message}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  const renderConnectButton = (platform: string): JSX.Element => (
+    <button
+      onClick={() => handleConnectPlatform(platform)}
+      disabled={isLoading}
+      className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 ${
+        isLoading 
+          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          : platformStats[platform] 
+            ? 'bg-green-100 text-green-700' 
+            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+      }`}
+    >
+      {isLoading ? (
+        <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+      ) : platformStats[platform] ? (
+        <>
+          <CheckCircle2 className="w-4 h-4" />
+          Connected
+        </>
+      ) : (
+        <>
+          <ExternalLink className="w-4 h-4" />
+          Connect
+        </>
+      )}
+    </button>
+  );
+
+  useEffect(() => {
+    // Auto-fetch stats if usernames are available
+    const leetcodeUsername = localStorage.getItem('leetcode_username');
+    const codeforcesHandle = localStorage.getItem('codeforces_handle');
+
+    if (leetcodeUsername) {
+      fetchLeetCodeStats(leetcodeUsername);
+    }
+    if (codeforcesHandle) {
+      fetchCodeforcesStats(codeforcesHandle);
+    }
+  }, []);
 
   return (
     <div className="space-y-8 p-8 bg-gray-50/[0.02] min-h-screen">
@@ -105,7 +282,7 @@ export default function DashboardHome() {
         <div className="relative">
           <div className="flex items-center justify-between">
             <div className="space-y-2">
-              <h1 className="text-4xl font-bold text-black">Welcome back, Alex! 👋</h1>
+              <h1 className="text-4xl font-bold text-black">Welcome back, Rachit! 👋</h1>
               <p className="text-gray-800">Ready to tackle today's coding challenges?</p>
             </div>
             <div className="text-right">
@@ -181,26 +358,7 @@ export default function DashboardHome() {
                 </div>
                 <h2 className="text-xl font-bold text-gray-900">LeetCode</h2>
               </div>
-              <button
-                onClick={() => handleConnectPlatform('leetcode')}
-                className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 ${
-                  platformStats.leetcode 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {platformStats.leetcode ? (
-                  <>
-                    <CheckCircle2 className="w-4 h-4" />
-                    Connected
-                  </>
-                ) : (
-                  <>
-                    <ExternalLink className="w-4 h-4" />
-                    Connect
-                  </>
-                )}
-              </button>
+              {renderConnectButton('leetcode')}
             </div>
             
             {platformStats.leetcode && (
@@ -235,6 +393,7 @@ export default function DashboardHome() {
                 </div>
               </div>
             )}
+            {renderError('leetcode')}
           </div>
         </div>
 
@@ -249,26 +408,7 @@ export default function DashboardHome() {
                 </div>
                 <h2 className="text-xl font-bold text-gray-900">CodeForces</h2>
               </div>
-              <button
-                onClick={() => handleConnectPlatform('codeforces')}
-                className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all duration-300 ${
-                  platformStats.codeforces 
-                    ? 'bg-green-100 text-green-700' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                {platformStats.codeforces ? (
-                  <>
-                    <CheckCircle2 className="w-4 h-4" />
-                    Connected
-                  </>
-                ) : (
-                  <>
-                    <ExternalLink className="w-4 h-4" />
-                    Connect
-                  </>
-                )}
-              </button>
+              {renderConnectButton('codeforces')}
             </div>
             
             {platformStats.codeforces && (
@@ -303,6 +443,7 @@ export default function DashboardHome() {
                 </div>
               </div>
             )}
+            {renderError('codeforces')}
           </div>
         </div>
       </div>
