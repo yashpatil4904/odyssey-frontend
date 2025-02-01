@@ -1,5 +1,6 @@
 import React from 'react';
 import { BookOpen, Code2, Trophy, Timer } from 'lucide-react';
+import { TypeAnimation } from 'react-type-animation';
 
 const stats = [
   { label: 'Problems Solved', value: '150', icon: Code2 },
@@ -12,7 +13,27 @@ export default function DashboardHome() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Welcome back!</h1>
+        <h1 className="text-3xl font-bold">
+          <span className="text-gray-900">Master DSA with </span>
+          <TypeAnimation
+            sequence={[
+              'Confidence',
+              1000,
+              'Excellence',
+              1000,
+              'Precision',
+              1000,
+              'Purpose',
+              1000,
+              'Passion',
+              1000,
+            ]}
+            wrapper="span"
+            speed={50}
+            repeat={Infinity}
+            className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-green-700"
+          />
+        </h1>
         <p className="text-gray-600 mt-2">Track your progress and keep learning</p>
       </div>
 

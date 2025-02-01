@@ -27,6 +27,11 @@ import Sidebar from './components/Sidebar';
 import { ThemeProvider } from './context/ThemeContext';
 import Leaderboard from './pages/Leaderboard';
 import Games from './pages/Games';
+import AllChallenges from './pages/AllChallenges';
+import DailyChallenges from './pages/DailyChallenges';
+import WeeklyChallenges from './pages/WeeklyChallenges';
+import { TypeAnimation } from 'react-type-animation';
+import logo from './assets/images/CodeCore logo_Black Background.png';
 
 function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
   return (
@@ -46,12 +51,35 @@ function NavigationBar() {
   const { isSignedIn, isLoaded } = useAuth();
 
   return (
-    <nav className="bg-white shadow-lg">
-      <div className="container mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="text-xl font-bold text-green-600">
-            CodeCore
-          </Link>
+    <nav className="bg-white shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <Link to="/" className="flex items-center gap-3">
+              <img 
+                src={logo} 
+                alt="CodeCore Logo" 
+                className="h-10 w-10 object-contain rounded-full"
+              />
+              <div className="text-xl font-bold">
+                <TypeAnimation
+                  sequence={[
+                    'CodeCore',
+                    1000,
+                    'Code Better',
+                    1000,
+                    'Code Smarter',
+                    1000,
+                  ]}
+                  wrapper="span"
+                  speed={50}
+                  repeat={Infinity}
+                  className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-green-700"
+                />
+              </div>
+            </Link>
+          </div>
+
           <div className="flex items-center space-x-4">
             {isLoaded && (
               <>
@@ -252,6 +280,9 @@ function AppContent() {
           <Route index element={<DashboardHome />} />
           <Route path="learning" element={<Learn />} />
           <Route path="challenges" element={<Challenges />} />
+          <Route path="challenges/all" element={<AllChallenges />} />
+          <Route path="challenges/daily" element={<DailyChallenges />} />
+          <Route path="challenges/weekly" element={<WeeklyChallenges />} />
           <Route path="challenges/:id" element={<ProblemPage />} />
           <Route path="leaderboard" element={<Leaderboard />} />
           <Route path="games" element={<Games />} />

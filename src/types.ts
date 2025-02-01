@@ -30,6 +30,13 @@ export type Challenge = {
     javascript: string;
     typescript: string;
     python: string;
+    java: string;
+    cpp: string;
+    c: string;
+    csharp: string;
+    go: string;
+    rust: string;
+    php: string;
   };
 };
 

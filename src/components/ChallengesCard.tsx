@@ -1,34 +1,33 @@
 // import React from 'react';
-import { Difficulty } from '../types';
+import { Challenge } from '../types';
 
-type ChallengeCardProps = {
-  title: string;
-  topic: string;
-  difficulty: Difficulty;
-  description: string;
-};
-
-const difficultyColors = {
-  Easy: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
-  Medium: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100',
-  Hard: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
-};
-
-export default function ChallengeCard({ title, topic, difficulty, description }: ChallengeCardProps) {
+export default function ChallengeCard(challenge: Challenge) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+    <div className="bg-white rounded-lg shadow-sm p-6 h-full">
+      {/* Title and Difficulty */}
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
-        <span className={`px-3 py-1 rounded-full text-sm font-medium ${difficultyColors[difficulty]}`}>
-          {difficulty}
+        <h3 className="text-lg font-semibold text-gray-900">{challenge.title}</h3>
+        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+          challenge.difficulty === 'Easy' ? 'bg-green-100 text-green-800' :
+          challenge.difficulty === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+          'bg-red-100 text-red-800'
+        }`}>
+          {challenge.difficulty}
         </span>
       </div>
-      <div className="mb-4">
-        <span className="inline-block bg-green-50 dark:bg-green-900 text-green-700 dark:text-green-100 px-3 py-1 rounded-full text-sm">
-          {topic}
+
+      {/* Description */}
+      <p className="text-gray-600 text-sm mb-4">
+        {challenge.description}
+      </p>
+
+      {/* Topic */}
+      <div className="flex items-center justify-between">
+        <span className="text-sm text-gray-500">{challenge.topic}</span>
+        <span className="text-sm font-medium text-green-600 hover:text-green-700">
+          Solve Challenge →
         </span>
       </div>
-      <p className="text-gray-600 dark:text-gray-400 line-clamp-2">{description}</p>
     </div>
   );
 }

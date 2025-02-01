@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { TrendingUp, Brain } from 'lucide-react';
+import { TrendingUp, Brain, ArrowRight, Timer, Calendar } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import ChallengeCard from '../components/ChallengesCard';
 import SearchBar from '../components/SearchBar';
@@ -59,144 +59,96 @@ export default function Challenges() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">DSA Challenges</h1>
-          <ThemeToggle />
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">DSA Challenges</h1>
         </div>
 
-        {/* Search and Filters */}
-        <div className="mb-8 space-y-4">
-          <SearchBar value={searchQuery} onChange={setSearchQuery} />
-          
-          <div className="flex flex-wrap gap-4">
-            {topics.map((topic) => (
-              <button
-                key={topic}
-                onClick={() => setSelectedTopic(topic)}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  selectedTopic === topic
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
-                }`}
-              >
-                {topic}
-              </button>
-            ))}
-          </div>
+        {/* Challenge Types Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Daily Challenges Card */}
+          <Link 
+            to="/dashboard/challenges/daily"
+            className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-gray-900">Daily Challenges</h2>
+              <Timer className="h-6 w-6 text-green-500" />
+            </div>
+            <p className="text-gray-600 mb-4">
+              Solve a new coding challenge every day to improve your skills.
+            </p>
+            <span className="text-green-500 hover:text-green-600 inline-flex items-center">
+              View Daily Challenges
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </span>
+          </Link>
 
-          <div className="flex flex-wrap gap-4">
-            {difficulties.map((difficulty) => (
-              <button
-                key={difficulty}
-                onClick={() => setSelectedDifficulty(difficulty)}
-                className={`px-4 py-2 rounded-lg transition-colors ${
-                  selectedDifficulty === difficulty
-                    ? 'bg-green-500 text-white'
-                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
-                }`}
-              >
-                {difficulty}
-              </button>
-            ))}
-          </div>
+          {/* Weekly Challenges Card */}
+          <Link 
+            to="/dashboard/challenges/weekly"
+            className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-gray-900">Weekly Challenges</h2>
+              <Calendar className="h-6 w-6 text-green-500" />
+            </div>
+            <p className="text-gray-600 mb-4">
+              Take on more complex challenges updated weekly.
+            </p>
+            <span className="text-green-500 hover:text-green-600 inline-flex items-center">
+              View Weekly Challenges
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </span>
+          </Link>
         </div>
 
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Challenges Section */}
-          <div className="lg:col-span-2 space-y-8">
-            {dailyChallenges.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Daily Challenges</h2>
-                <div className="grid gap-6">
-                  {dailyChallenges.map(challenge => (
-                    <Link key={challenge.id} to={`/dashboard/challenges/${challenge.id}`}>
-                      <ChallengeCard
-                        title={challenge.title}
-                        topic={challenge.topic}
-                        difficulty={challenge.difficulty}
-                        description={challenge.description}
-                      />
-                    </Link>
-                  ))}
+        {/* Topics and Stats Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* Trending Topics Card */}
+          <section className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center mb-4">
+              <TrendingUp className="h-5 w-5 text-green-500 mr-2" />
+              <h2 className="text-lg font-semibold text-gray-900">Trending Topics</h2>
+            </div>
+            <div className="grid gap-3">
+              {trendingTopics.map((topic) => (
+                <div key={topic.name} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span className="text-gray-700">{topic.name}</span>
+                  <span className="text-green-500 font-medium">{topic.count} solved</span>
                 </div>
-              </section>
-            )}
+              ))}
+            </div>
+          </section>
 
-            {weeklyChallenges.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">Weekly Challenges</h2>
-                <div className="grid gap-6">
-                  {weeklyChallenges.map(challenge => (
-                    <Link key={challenge.id} to={`/dashboard/challenges/${challenge.id}`}>
-                      <ChallengeCard
-                        title={challenge.title}
-                        topic={challenge.topic}
-                        difficulty={challenge.difficulty}
-                        description={challenge.description}
-                      />
-                    </Link>
-                  ))}
+          {/* Hard Topics Card */}
+          <section className="bg-white rounded-lg shadow-sm p-6">
+            <div className="flex items-center mb-4">
+              <Brain className="h-5 w-5 text-green-500 mr-2" />
+              <h2 className="text-lg font-semibold text-gray-900">Hard Topics</h2>
+            </div>
+            <div className="grid gap-3">
+              {hardTopics.map((topic) => (
+                <div key={topic.name} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <span className="text-gray-700">{topic.name}</span>
+                  <span className="text-red-500 font-medium">{topic.difficulty}/10</span>
                 </div>
-              </section>
-            )}
+              ))}
+            </div>
+          </section>
+        </div>
 
-            {regularChallenges.length > 0 && (
-              <section>
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">All Challenges</h2>
-                <div className="grid gap-6">
-                  {regularChallenges.map(challenge => (
-                    <Link key={challenge.id} to={`/dashboard/challenges/${challenge.id}`}>
-                      <ChallengeCard
-                        title={challenge.title}
-                        topic={challenge.topic}
-                        difficulty={challenge.difficulty}
-                        description={challenge.description}
-                      />
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            )}
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-8">
-            {/* Trending Topics */}
-            <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex items-center mb-4">
-                <TrendingUp className="h-6 w-6 text-green-500 mr-2" />
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Trending Topics</h2>
-              </div>
-              <div className="space-y-4">
-                {trendingTopics.map((topic) => (
-                  <div key={topic.name} className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-gray-300">{topic.name}</span>
-                    <span className="text-green-500 font-medium">{topic.count} solved</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            {/* Hard Topics */}
-            <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-              <div className="flex items-center mb-4">
-                <Brain className="h-6 w-6 text-green-500 mr-2" />
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Hard Topics</h2>
-              </div>
-              <div className="space-y-4">
-                {hardTopics.map((topic) => (
-                  <div key={topic.name} className="flex justify-between items-center">
-                    <span className="text-gray-700 dark:text-gray-300">{topic.name}</span>
-                    <span className="text-red-500 font-medium">{topic.difficulty}/10</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
+        {/* View All Challenges Button */}
+        <div className="flex justify-center">
+          <Link
+            to="/dashboard/challenges/all"
+            className="inline-flex items-center px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-medium rounded-lg transition-colors"
+          >
+            View All Challenges
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Link>
         </div>
       </div>
     </div>

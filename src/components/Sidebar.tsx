@@ -13,6 +13,7 @@ import {
   Gamepad2
 } from 'lucide-react';
 import { UserButton } from '@clerk/clerk-react';
+import logo from '../assets/images/CodeCore logo_Black Background.png';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
@@ -37,7 +38,16 @@ export default function Sidebar() {
       <div className="flex flex-col h-full">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
-          {!isCollapsed && <span className="text-xl font-bold text-green-600">CodeCore</span>}
+          {!isCollapsed && (
+            <Link to="/" className="flex items-center gap-2">
+              <img 
+                src={logo} 
+                alt="CodeCore Logo" 
+                className="h-8 w-8 object-contain rounded-full"
+              />
+              <span className="text-xl font-bold text-green-600">CodeCore</span>
+            </Link>
+          )}
           <button
             onClick={() => setIsCollapsed(!isCollapsed)}
             className={`p-2 rounded-lg hover:bg-gray-100 transition-transform duration-300 ${
