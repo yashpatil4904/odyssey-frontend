@@ -1,20 +1,14 @@
 import React from 'react';
 import {
-  BookOpen,
   Code2,
   Trophy,
   Users,
-  Target,
   Brain,
-  Timer,
-  MessageSquare,
   Award,
   GitBranch,
-  Rocket,
-  Building2
 } from 'lucide-react';
-import { ClerkProvider, SignIn, SignUp, useAuth, UserButton } from '@clerk/clerk-react';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate, useLocation } from 'react-router-dom';
+import { ClerkProvider,useAuth, UserButton } from '@clerk/clerk-react';
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import SignInPage from './pages/SignIn';
@@ -26,6 +20,8 @@ import Games from './pages/Games';
 import LearningPath from './pages/LearningPath';
 import DSALearning from './pages/DSALearning';
 import Chatbot from './components/chatbot/chatbot';
+import Profile from './pages/Profile';
+import Simulations from './pages/Simulations';
 
 function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
   return (
@@ -254,6 +250,8 @@ function AppContent() {
             <Route path="learning" element={<Learn />} />
             <Route path="leaderboard" element={<Leaderboard />} />
             <Route path="games" element={<Games />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="simulations" element={<Simulations />} />
             {/* Add other dashboard routes here */}
           </Route>
           <Route 

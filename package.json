@@ -12,8 +12,11 @@
   "dependencies": {
     "@clerk/clerk-react": "^5.22.10",
     "@monaco-editor/react": "^4.6.0",
+    "@types/d3": "^7.4.3",
     "@uiw/react-textarea-code-editor": "^3.1.0",
+    "axios": "^1.7.9",
     "canvas-confetti": "^1.9.3",
+    "d3": "^7.9.0",
     "dom-confetti": "^0.2.2",
     "framer-motion": "^12.0.6",
     "lucide-react": "^0.344.0",
