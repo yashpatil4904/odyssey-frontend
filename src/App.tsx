@@ -13,6 +13,7 @@ import {
   Rocket,
   Building2
 } from 'lucide-react';
+
 import { ClerkProvider, SignIn, SignUp, useAuth, UserButton } from '@clerk/clerk-react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate, useLocation } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
