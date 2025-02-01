@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Network, 
   GitBranch, 
@@ -17,7 +17,11 @@ import {
   Split,
   Radar,
   Sparkles,
-  Zap
+  Zap,
+  Code2,
+  Brain,
+  Lightbulb,
+  ArrowRight
 } from 'lucide-react';
 import SimulationViewer from '../components/simulations/SimulationViewer';
 
@@ -128,22 +132,86 @@ export default function Simulations() {
       {!selectedTopic ? (
         <div className="max-w-7xl mx-auto space-y-8">
           {/* Header with Animated Background */}
-          <div className="relative overflow-hidden bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-            <div className="absolute inset-0 bg-gradient-to-r from-green-50 to-emerald-50 opacity-50" />
-            <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]" />
-            <div className="relative">
+          <div className="relative">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute top-0 right-0 w-1/3 h-full"
+            >
+              <div className="absolute inset-0 bg-gradient-to-l from-green-100/50 to-transparent" />
+              <div className="absolute inset-0 grid-pattern opacity-[0.05]" />
+            </motion.div>
+
+            <div className="relative z-10">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
+                className="space-y-6"
               >
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                  Algorithm Simulations
+                <div className="flex items-center gap-3 text-green-600">
+                  <Sparkles className="w-6 h-6" />
+                  <span className="text-sm font-semibold tracking-wider uppercase">
+                    Interactive Learning
+                  </span>
+                </div>
+
+                <h1 className="text-5xl font-bold text-gray-900">
+                  <span className="inline-block">
+                    Algorithm
+                  </span>
+                  {' '}
+                  <span className="inline-block relative">
+                    Simulations
+                    <motion.div
+                      className="absolute -bottom-2 left-0 w-full h-2 bg-green-200/60 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: '100%' }}
+                      transition={{ delay: 0.5, duration: 0.5 }}
+                    />
+                  </span>
                 </h1>
-                <p className="text-lg text-gray-600 max-w-3xl">
-                  Visualize and understand how different algorithms work through interactive simulations. 
-                  Select a topic to get started with your learning journey.
-                </p>
+
+                <div className="max-w-3xl space-y-6">
+                  <p className="text-lg text-gray-600 leading-relaxed">
+                    Visualize and understand how different algorithms work through interactive simulations. 
+                    Select a topic to get started with your learning journey.
+                  </p>
+
+                  <div className="flex flex-wrap gap-4">
+                    <motion.div
+                      className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-100"
+                      whileHover={{ y: -2 }}
+                    >
+                      <Code2 className="w-5 h-5 text-green-600" />
+                      <span className="text-sm text-gray-700">Step-by-Step Visualization</span>
+                    </motion.div>
+
+                    <motion.div
+                      className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-100"
+                      whileHover={{ y: -2 }}
+                    >
+                      <Brain className="w-5 h-5 text-green-600" />
+                      <span className="text-sm text-gray-700">Interactive Learning</span>
+                    </motion.div>
+
+                    <motion.div
+                      className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg shadow-sm border border-gray-100"
+                      whileHover={{ y: -2 }}
+                    >
+                      <Lightbulb className="w-5 h-5 text-green-600" />
+                      <span className="text-sm text-gray-700">Real-World Applications</span>
+                    </motion.div>
+                  </div>
+
+                  <motion.div
+                    className="inline-flex items-center gap-2 text-green-600 font-medium cursor-pointer group"
+                    whileHover={{ x: 5 }}
+                  >
+                    Start Learning
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </motion.div>
+                </div>
               </motion.div>
             </div>
           </div>
