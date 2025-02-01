@@ -25,6 +25,8 @@ import Challenges from './pages/Challenges';
 import ProblemPage from './pages/ProblemPage';
 import Sidebar from './components/Sidebar';
 import { ThemeProvider } from './context/ThemeContext';
+import Leaderboard from './pages/Leaderboard';
+import Games from './pages/Games';
 
 function FeatureCard({ icon: Icon, title, description }: { icon: any, title: string, description: string }) {
   return (
@@ -251,6 +253,9 @@ function AppContent() {
           <Route path="learning" element={<Learn />} />
           <Route path="challenges" element={<Challenges />} />
           <Route path="challenges/:id" element={<ProblemPage />} />
+          <Route path="leaderboard" element={<Leaderboard />} />
+          <Route path="games" element={<Games />} />
+          {/* Add other dashboard routes here */}
         </Route>
       </Routes>
     </>
